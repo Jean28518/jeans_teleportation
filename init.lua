@@ -4,9 +4,10 @@
 -- See in the REAMDE.md for detailed instructions. -----------------------------
 
 local SPAWN_POS = minetest.settings:get("static_spawnpoint") or {x=0, y=10, z=0}
-local TELEPORTATION_WITH_COORDINATES = true
+local TELEPORTATION_WITH_COORDINATES = false
 local ACTIVATE_HOMEPOINTS = true -- Set it false, if players shouldnt set homepoints
-local PRICE_PER_100_BLOCKS = 10 -- Set it to zero, if pricing should be deactivated
+local ACTIVATE_PLAYER_TP = true -- Set it to false, if players shouldn't teleport theirself to other players.
+local PRICE_PER_100_BLOCKS = 10 -- Set it to zero, if pricing should be deactivated. Default is 10.
 local HIGHER_PRICE_FOR_MINERS = true
 local MINER_DEFINITION = -1000 -- Y-Coordinate that defines, if you are a miner (on teleporting)
 local MINER_FACTOR = 1.05 -- Every 1000 Blocks deepness The price is multiplied by the Miner Factor
@@ -40,7 +41,7 @@ minetest.register_chatcommand("tp", {
   func = function(name, param)
     local dest_pos = jeans_teleportation_analyze_command(name, param)
     if dest_pos == nil then
-      minetest.chat_send_player(name, "Correct use: /tp <x> <y> <z>, /tp <player>, /tp spawn, /tp <home>")
+      minetest.chat_send_player(name, "Type /tp_help to see how this command is used")
     elseif dest_pos == "player" then
       minetest.chat_send_player(name, "Request sended. You can cancel your request with /tp_canc")
     else
@@ -51,7 +52,7 @@ minetest.register_chatcommand("tp", {
 })
 
 if ACTIVATE_HOMEPOINTS then
-  minetest.register_chatcommand("tp_set", {
+  minetest.register_chatcommand("tp_add", {
     privs = {
       interact = true,
     },
@@ -62,7 +63,7 @@ if ACTIVATE_HOMEPOINTS then
       end
       homes[name][param] = minetest.get_player_by_name(name):get_pos()
       storage:set_string("homes", minetest.serialize(homes))
-      minetest.chat_send_player(name, "Home successfully set!")
+      minetest.chat_send_player(name, "Home successfully added!")
     end
   })
 end
@@ -126,6 +127,37 @@ minetest.register_chatcommand("tp_canc", {
   end
 })
 
+minetest.register_chatcommand("tp_help", {
+  privs = {
+    interact = true,
+  },
+  func = function(name, param)
+    minetest.chat_send_player(name, "## How to use Jean's teleportation: ##")
+    if SPAWN_POS then
+      minetest.chat_send_player(name, "/tp spawn: Teleports you to spawn")
+    end
+    if ACTIVATE_PLAYER_TP then
+      minetest.chat_send_player(name, "/tp <player>: Sends a teleporting request to another player")
+    end
+    if TELEPORTATION_WITH_COORDINATES then
+      minetest.chat_send_player(name, "/tp <x> <y> <z>: Teleports you to a specific location")
+    end
+    if ACTIVATE_HOMEPOINTS then
+      minetest.chat_send_player(name, "/tp add <home_name>: Adds a homepoint on your current postion. You can define unlimited home points")
+      minetest.chat_send_player(name, "/tp <home_name>: Teleports you to a homepoint")
+      minetest.chat_send_player(name, "/tp_list: Shows all your saved homepoints")
+      minetest.chat_send_player(name, "/tp_del <home_name>: Deletes a specific home point")
+    end
+    if jeans_economy and PRICE_PER_100_BLOCKS ~= 0 then
+      minetest.chat_send_player(name, "ATTENTION: Teleporting costs you money! Per 100 Blocks: "..PRICE_PER_100_BLOCKS)
+      if HIGHER_PRICE_FOR_MINERS then
+        minetest.chat_send_player(name, "For miners which are teleporting under y ="..MINER_DEFINITION.." the price of telportation grows with deepness.")
+      end
+    end
+    minetest.chat_send_player(name, "Press F10 to see the whole message.")
+  end
+})
+
 --------------------------------------------------------------------------------
 -- FUNCTIONS -------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -148,10 +180,12 @@ function jeans_teleportation_analyze_command(playername, param)
       end
     end
   end
-  if minetest.get_player_by_name(param) then
-    tp_requests[param] = playername -- minetest.get_player_by_name(param):get_pos()
-    minetest.chat_send_player(param, playername.." wants to teleport itself to you. Accept with /tp_yes")
-    return "player"
+  if ACTIVATE_PLAYER_TP then
+    if minetest.get_player_by_name(param) then
+      tp_requests[param] = playername -- minetest.get_player_by_name(param):get_pos()
+      minetest.chat_send_player(param, playername.." wants to teleport itself to you. Accept with /tp_yes")
+      return "player"
+    end
   end
   if TELEPORTATION_WITH_COORDINATES then
     local x_pos, y_pos, z_pos = string.match(param, "(%S+) (%S+) (%S+)")
