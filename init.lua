@@ -143,7 +143,7 @@ minetest.register_chatcommand("tp_help", {
       minetest.chat_send_player(name, "/tp <x> <y> <z>: Teleports you to a specific location")
     end
     if ACTIVATE_HOMEPOINTS then
-      minetest.chat_send_player(name, "/tp add <home_name>: Adds a homepoint on your current postion. You can define unlimited home points")
+      minetest.chat_send_player(name, "/tp_add <home_name>: Adds a homepoint on your current postion. You can define unlimited home points")
       minetest.chat_send_player(name, "/tp <home_name>: Teleports you to a homepoint")
       minetest.chat_send_player(name, "/tp_list: Shows all your saved homepoints")
       minetest.chat_send_player(name, "/tp_del <home_name>: Deletes a specific home point")
