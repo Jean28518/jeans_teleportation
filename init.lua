@@ -4,7 +4,7 @@
 -- See in the REAMDE.md for detailed instructions. -----------------------------
 
 local SPAWN_POS = minetest.settings:get("static_spawnpoint") or {x=0, y=10, z=0}
-local TELEPORTATION_WITH_COORDINATES = false
+local TELEPORTATION_WITH_COORDINATES = true
 local ACTIVATE_HOMEPOINTS = true -- Set it false, if players shouldnt set homepoints
 local ACTIVATE_PLAYER_TP = true -- Set it to false, if players shouldn't teleport theirself to other players.
 local PRICE_PER_100_BLOCKS = 10 -- Set it to zero, if pricing should be deactivated. Default is 10.
