@@ -5,6 +5,7 @@
 
 local SPAWN_POS = minetest.settings:get("static_spawnpoint") or {x=0, y=10, z=0}
 local TELEPORTATION_WITH_COORDINATES = true
+local ACTIVATE_TELEPORT_TO_LAST_DEATH = true -- Set it to false, if the players shouldnt port to their last death point
 local ACTIVATE_HOMEPOINTS = true -- Set it false, if players shouldnt set homepoints
 local ACTIVATE_PLAYER_TP = true -- Set it to false, if players shouldn't teleport theirself to other players.
 local PRICE_PER_100_BLOCKS = 10 -- Set it to zero, if pricing should be deactivated. Default is 10.
@@ -58,6 +59,10 @@ if ACTIVATE_HOMEPOINTS then
     },
     func = function(name, param)
       local homes = minetest.deserialize(storage:get_string("homes"))
+      if param == "" then
+        minetest.chat_send_player(name, "You have to define a specific name!")
+        return
+      end
       if homes[name] == nil then
         homes[name] = {}
       end
@@ -148,6 +153,9 @@ minetest.register_chatcommand("tp_help", {
       minetest.chat_send_player(name, "/tp_list: Shows all your saved homepoints")
       minetest.chat_send_player(name, "/tp_del <home_name>: Deletes a specific home point")
     end
+    if ACTIVATE_TELEPORT_TO_LAST_DEATH then
+      minetest.chat_send_player(name, "/tp death: Teleports you to your last death point")
+    end
     if jeans_economy and PRICE_PER_100_BLOCKS ~= 0 then
       minetest.chat_send_player(name, "ATTENTION: Teleporting costs you money! Per 100 Blocks: "..PRICE_PER_100_BLOCKS)
       if HIGHER_PRICE_FOR_MINERS then
@@ -227,3 +235,21 @@ function jeans_teleportation_teleport(name, dest_pos)
   end
 
 end
+
+
+-----------------------------------------------------------------------
+----- Save last death Point -------------------------------------------
+-----------------------------------------------------------------------
+
+minetest.register_on_dieplayer(function(player)
+  if ACTIVATE_TELEPORT_TO_LAST_DEATH then
+    local name = player:get_player_name()
+    local homes = minetest.deserialize(storage:get_string("homes"))
+    if homes[name] == nil then
+      homes[name] = {}
+    end
+    homes[name]["death"] = player:get_pos()
+    storage:set_string("homes", minetest.serialize(homes))
+    minetest.chat_send_player(name, "You died. You can get back with /tp death")
+  end
+end)

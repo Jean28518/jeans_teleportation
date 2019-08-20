@@ -8,6 +8,7 @@ This mod does NOT overwrite any common commands as `/spawn`, `/home`, or `/telep
 - Teleporting to other players, specific positions, self set homes, or global defined telportation points automaticly in one single command
 - (Optional) Teleporting to other players only works, if the other player accepts the request
 - (Optional) Teleporting to specific defined coordinates (`/tp <x> <y> <z>`)
+- (Optional) Teleporting to last death point
 - (Optional) Unlimited custom homepoints for players
 - (Optional) Integration of Jean's Economy. Teleporting will cost something depending on the teleport distance
 - (Optional) Higher teleporting prices for miners.
@@ -18,6 +19,7 @@ This mod does NOT overwrite any common commands as `/spawn`, `/home`, or `/telep
 - `/tp <x> <y> <z>` Teleporting to a specific location. This feature can be disabled. See below for instructions.
 - `/tp_add <home_name>` Set a custom homepoint at the current position. You can set unlimited homepoints. This feature can be disabled. See below for instructions.
 - `/tp <home_name>` Teleporting to a custom home point.
+- `/tp death` Teleports your to your last death point.
 - `/tp_list` See all your custom homepoints
 - `/tp_del <home_name>` Deleting a custom home point.
 - `/tp <your_globally_defined_teleportation_point>` You can define your own global teleportation points. (See below for instructions). For example: `/tp adminshop`, `/tp libary`, ....
