@@ -2,7 +2,7 @@
 
 This Mod brings an advanced teleporting technologies to your server. Such as tp requests to other players, and paying for teleportation.
 
-This mod does NOT overwrite any common commands as `/spawn`, `/home`, or `/teleport`. It is designed for players ingame and not for admins. Additionaly this mod is desingned for paying for teleportation with ingame currency. But this feature can be disabled.
+This mod does NOT overwrite any common commands as `/spawn`, `/home`, or `/teleport`. Additionaly this mod is desingned for paying for teleportation with ingame currency. But this feature can be disabled.
 
 ## Features:
 - Teleporting to other players, specific positions, self set homes, or global defined telportation points automaticly in one single command
@@ -27,13 +27,13 @@ This mod does NOT overwrite any common commands as `/spawn`, `/home`, or `/telep
 
 ## Configuration:
 You can configure some functions and definitions in the init.lua file. You are able to configure:
-- You can define a custom spawnpoint by deleting ` minetest.settings:get("static_spawnpoint") or` in the sixth Line, and configuring the location in the end. By default the Spawn Point is the Spawn configured in the minetest.conf file. You can disable this by commenting this line with `--` at the beginning
-- Other Custom Public Points. Please read the comments there for specific instructions (Near Line 170)
-- Whether teleporting to specific coordinates is allowed or not (Line 7)
-- If players can save their own Home Points or not with `/tp_set <home_name>` (Line 8)
-- If players can teleport to eachother with `/tp <player>`(Line 9)
+- the spawnpoint in line 8.
+- other Custom Public Points. Please read the comments there for specific instructions from `functions.lua:10`.
+- whether teleporting to specific coordinates is allowed or not (Line 7)
+- if players can save their own Home Points or not with `/tp_add <home_name>` (Line 8)
+- if players can teleport to eachother with `/tp <player>`(Line 9)
 
 ### Pricing:
-When the Mod Jean's Economy can be found by the mod, pricing is activated by default. Otherwise you don't have to keep attention to it, and pricing is disabled automaticly. When you have Jean's Economy activated, but dont want to have the pricing activated, you can disable this by setting `PRICE_PER_100_BLOCKS = 0` in Line 4.
+When the Mod Jean's Economy can be found by the mod, pricing is activated by default. Otherwise you don't have to keep attention to it, and pricing is disabled automaticly. When you have Jean's Economy activated, but dont want to have the pricing activated, you can disable this by setting `PRICE_PER_100_BLOCKS = 0` in Line 12. For a teleportation with more than 100 Money, you will be asked, if you want to teleport with such a high price. You can confirm with `/tp_confirm`.
 
-Also a feature is implemented, that (real) miners have to pay higher prices by getting far in the underground, or getting aut of it. You can configure/disable this in the Lines 5 - 7. The price grows exponentially by getting deeper.
+Also a feature is implemented, that (real) miners have to pay higher prices by getting far in the underground, or getting aut of it. You can configure/disable this in the Lines 13 - 15. The price grows exponentially by getting deeper.
