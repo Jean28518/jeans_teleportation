@@ -1,4 +1,5 @@
 local pending_teleportations_high_prices = { }
+local tp_requests = {}
 
 local jeans_economy = false
 if minetest.get_modpath("jeans_economy") then jeans_economy = true end
