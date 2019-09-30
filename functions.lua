@@ -1,5 +1,4 @@
 local pending_teleportations_high_prices = { }
-local tp_requests = {}
 
 local jeans_economy = false
 if minetest.get_modpath("jeans_economy") then jeans_economy = true end
@@ -24,7 +23,7 @@ function jeans_teleportation.analyze_command(playername, param)
   end
   if jeans_teleportation.ACTIVATE_PLAYER_TP then
     if minetest.get_player_by_name(param) then
-      tp_requests[param] = playername -- minetest.get_player_by_name(param):get_pos()
+      jeans_teleportation.tp_requests[param] = playername -- minetest.get_player_by_name(param):get_pos()
       minetest.chat_send_player(param, playername.." wants to teleport itself to you. Accept with /tp_yes")
       return "player"
     end

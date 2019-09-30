@@ -75,10 +75,10 @@ minetest.register_chatcommand("tp_yes", {
     interact = true,
   },
   func = function(name, param)
-    if tp_requests[name] ~= nil then
-      jeans_teleportation.teleport(tp_requests[name], minetest.get_player_by_name(name):get_pos())
-      minetest.chat_send_player(name, "Teleporting "..tp_requests[name].." to you...")
-      tp_requests[name] = nil
+    if jeans_teleportation.tp_requests[name] ~= nil then
+      jeans_teleportation.teleport(jeans_teleportation.tp_requests[name], minetest.get_player_by_name(name):get_pos())
+      minetest.chat_send_player(name, "Teleporting "..jeans_teleportation.tp_requests[name].." to you...")
+      jeans_teleportation.tp_requests[name] = nil
 
     end
   end
@@ -89,9 +89,9 @@ minetest.register_chatcommand("tp_canc", {
     interact = true,
   },
   func = function(name, param)
-    for k, v in pairs(tp_requests) do
+    for k, v in pairs(jeans_teleportation.tp_requests) do
       if v == name then
-        tp_requests[k] = nil
+        jeans_teleportation.tp_requests[k] = nil
         minetest.chat_send_player(k, v.." don't want anymore to teleport itself to you")
       end
     end

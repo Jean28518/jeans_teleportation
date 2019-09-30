@@ -26,7 +26,7 @@ if homes == nil then
 end
 jeans_teleportation.storage:set_string("homes", minetest.serialize(homes))
 
-local tp_requests = {}
+jeans_teleportation.tp_requests = {}
 
 --------------------------------------------------------------------------------
 
