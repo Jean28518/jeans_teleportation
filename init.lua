@@ -45,7 +45,7 @@ dofile(modpath.."/commands.lua")
 -----------------------------------------------------------------------
 
 minetest.register_on_dieplayer(function(player)
-  if ACTIVATE_TELEPORT_TO_LAST_DEATH then
+  if jeans_teleportation.ACTIVATE_TELEPORT_TO_LAST_DEATH then
     local name = player:get_player_name()
     local homes = minetest.deserialize(jeans_teleportation.storage:get_string("homes"))
     if homes[name] == nil then
